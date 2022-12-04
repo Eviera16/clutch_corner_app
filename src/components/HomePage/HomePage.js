@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import ItemPics from '../Utilities/ItemPics';
+import { useLocation } from 'react-router-dom';
 
 function useWindowSize() {
     const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
@@ -17,6 +18,7 @@ function useWindowSize() {
 }
 
 export default function HomePage() {
+    const location = useLocation();
     const [height, width] = useWindowSize();
 
     const text = {

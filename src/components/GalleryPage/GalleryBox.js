@@ -1,6 +1,5 @@
 import { useState, React } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalState, setGlobalState } from '../../state';
 
 export default function GalleryBox(props) {
     const [isHovering, setIsHovering] = useState(false);
@@ -42,14 +41,38 @@ export default function GalleryBox(props) {
         justifyContent: 'center',
         alignItems: 'center'
     }
+
+    const setGalleryViewPage = () => {
+        let url = 'https://clutch-corner-server.herokuapp.com/api/setGView';
+        let data = "?data=" + props.imageObj['galleryimageobj_id'];
+
+        fetch(url + data, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+            .then(response => {
+                console.log(response.status);
+                if (response.status == 200) {
+                    navigate('gView')
+                }
+                else {
+                    console.log("Error Occured");
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
     return (
         <button onClick={() => {
-            setGlobalState("gView", props.imageObj);
-            navigate('gView');
+            setGalleryViewPage();
         }} style={box} onMouseEnter={() => { setIsHovering(true) }} onMouseLeave={() => { setIsHovering(false) }}>
-            <img src={require('../../images/gallery/' + props.imageObj['image'])} style={imageBox} />
+            <img src={"data:image/png;base64," + props.imageObj['imgbuffer']} alt={props.imageObj['title']} style={imageBox} />
             <div style={cover}></div>
-            <strong style={desc}>{props.imageObj['description']}</strong>
+            <strong style={desc}>{props.imageObj['title']}</strong>
         </button>
     )
 }

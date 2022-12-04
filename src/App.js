@@ -9,6 +9,7 @@ import GadgetsPage from "./components/GadgetsPage/GadgetsPage";
 import FAQPage from "./components/FAQPage/FAQPage";
 import ContactsPage from "./components/ContactPage/ContactsPage.js";
 import GalleryView from "./components/GalleryPage/GalleryView";
+import GalleryAdd from "./components/GalleryPage/GalleryAdd";
 
 function useWindowSize() {
   const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
@@ -43,6 +44,7 @@ function App() {
           <Route path='/faq' element={<FAQPage />} />
           <Route path='/contact' element={<ContactsPage />} />
           <Route path='/gallery/gView' element={<GalleryView />} />
+          <Route path='/galleryAdd' element={<GalleryAdd />} />
         </Routes>
       </div>
     </div>

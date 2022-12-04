@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function useWindowSize() {
     const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
@@ -13,11 +14,6 @@ function useWindowSize() {
         };
     }, []);
     return size;
-}
-
-const title = {
-    marginLeft: '30%',
-    marginTop: '5%'
 }
 
 const body = {
@@ -43,12 +39,6 @@ const form_body = {
 const text_title = {
     color: 'white',
     textDecoration: 'underline',
-    src: 'https://fonts.googleapis.com/css?family=Orbitron',
-    fontFamily: "'Orbitron', sans-serif"
-}
-
-const text = {
-    color: 'white',
     src: 'https://fonts.googleapis.com/css?family=Orbitron',
     fontFamily: "'Orbitron', sans-serif"
 }
@@ -104,30 +94,43 @@ const label = {
     fontFamily: "'Orbitron', sans-serif"
 }
 
+const error = {
+    color: 'red',
+    backgroundColor: 'black'
+}
+
 export default function LoginPage() {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [height, width] = useWindowSize();
     const [password, setPassword] = useState('Input Password');
-    // useEffect(() => {
-    //     fetch('https://clutch-corner-dev.herokuapp.com/api')
-    //         .then((res) => { return res.json(); })
-    //         .then((data) => {
-    //             console.log("GETTING THE DATA");
-    //             console.log(data);
-    //         })
-    // }, []);
+    const [hasError, setHasError] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log("PRESSING SUBMIT");
+        let url = 'https://clutch-corner-server.herokuapp.com/api/login';
+        let data = "?password=" + password;
 
-        // fetch('https://clutch-corner-dev.herokuapp.com/api', {
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         data: "Data Here"
-        //     })
-        // })
-        //     .then((res) => { console.log(res) })
+        fetch(url + data, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+            .then(response => {
+                if (response.status == 200) {
+                    setHasError(false);
+                    navigate('home')
+                }
+                else {
+                    setHasError(true);
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
 
     return (
@@ -144,17 +147,16 @@ export default function LoginPage() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
+                        {hasError ? <p style={error}>Invalid Password</p> : <p></p>}
                         <button style={button} type="submit">Login</button>
                     </form>
                 </div>
-                {/* <div style={footer}>
-
-                </div> */}
                 <form style={form1}>
                     <label style={label}>Subscribe now or regret later.</label>
                     <input style={email_input} type="email" placeholder="Enter email" />
                     <button style={button2}>Submit</button>
                 </form>
+
 
             </div>
         </div>

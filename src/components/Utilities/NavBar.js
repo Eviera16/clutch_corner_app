@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function useWindowSize() {
     const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
@@ -16,6 +17,7 @@ function useWindowSize() {
 }
 
 export default function NavBar() {
+    const location = useLocation();
     const [height, width] = useWindowSize();
 
     const Bar = {
@@ -35,6 +37,14 @@ export default function NavBar() {
         zIndex: '11'
     }
 
+    const navList1 = {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        listStyleType: 'none',
+        zIndex: '11'
+    }
+
     const linkText = {
         color: 'white',
         fontSize: window.innerWidth * 0.02,
@@ -42,15 +52,27 @@ export default function NavBar() {
         zIndex: '12'
     }
 
-    return (
-        <div style={Bar}>
-            <ul style={navList}>
-                <li><Link to='/gallery' style={linkText}>Gallery</Link></li>
-                <li><Link to='/gadgets' style={linkText}>Gadgets</Link></li>
-                <li><Link to='/' ><img src={require('../../images/IMG_1276.jpg')} height={height * .1} width={width * .4} /></Link></li>
-                <li><Link to='/faq' style={linkText}>FAQ</Link></li>
-                <li><Link to='/contact' style={linkText}>Contact</Link></li>
-            </ul>
-        </div>
-    )
+    if (location.pathname == "/") {
+        return (
+            <div style={Bar}>
+                <ul style={navList1}>
+                    <li><img src={require('../../images/IMG_1276.jpg')} height={height * .1} width={width * .4} /></li>
+                </ul>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div style={Bar}>
+                <ul style={navList}>
+                    <li><Link to='/gallery' style={linkText}>Gallery</Link></li>
+                    <li><Link to='/gadgets' style={linkText}>Gadgets</Link></li>
+                    <li><Link to='/home' ><img src={require('../../images/IMG_1276.jpg')} height={height * .1} width={width * .4} /></Link></li>
+                    <li><Link to='/faq' style={linkText}>FAQ</Link></li>
+                    <li><Link to='/contact' style={linkText}>Contact</Link></li>
+                </ul>
+            </div>
+        )
+    }
+
 }

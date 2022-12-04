@@ -10,7 +10,8 @@ export default function GalleryRow(props) {
     return (
         <div style={row}>
             {props.imageObjs.map((obj, index) => {
-                return <GalleryBox key={index} imageObj={obj} />
+                const newIndex = (props.imgIndex * 3) + index + 1;
+                return <GalleryBox key={index} imageObj={obj} imggIndex={newIndex} />
             })}
         </div>
     )
