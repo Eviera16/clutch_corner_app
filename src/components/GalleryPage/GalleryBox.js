@@ -43,6 +43,7 @@ export default function GalleryBox(props) {
     }
 
     const setGalleryViewPage = () => {
+        console.log("IN THE SET G VIEW");
         let url = 'https://clutch-corner-server.herokuapp.com/api/setGView';
         let data = "?data=" + props.imageObj['galleryimageobj_id'];
 
